@@ -21,7 +21,10 @@ version( X86 )
     /**
      * The base vararg list type.
      */
-    alias void* va_list;
+    version(Windows)
+        alias char* va_list;
+    else
+        alias void* va_list;
 
     /**
      * This function initializes the supplied argument pointer for subsequent
