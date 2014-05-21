@@ -21,7 +21,10 @@ version( X86 )
     /*********************
      * The argument pointer type.
      */
-    alias void* va_list;
+    version(Windows)
+        alias char* va_list;
+    else
+        alias void* va_list;
 
     /**********
      * Initialize ap.
@@ -169,13 +172,14 @@ else version (X86_64)
     }
 
     // Layout of this struct must match __gnuc_va_list for C ABI compatibility
-    struct __va_list
+    struct __va_list_tag
     {
         uint offset_regs = 6 * 8;            // no regs
         uint offset_fpregs = 6 * 8 + 8 * 16; // no fp regs
         void* stack_args;
         void* reg_args;
     }
+    alias __va_list = __va_list_tag;
 
     align(16) struct __va_argsave_t
     {
@@ -188,7 +192,7 @@ else version (X86_64)
      * Making it an array of 1 causes va_list to be passed as a pointer in
      * function argument lists
      */
-    alias void* va_list;
+    alias va_list = __va_list*;
 
     void va_start(T)(out va_list ap, ref T parmn)
     {
