@@ -20,7 +20,7 @@ version( X86 )
     /*********************
      * The argument pointer type.
      */
-    alias char* va_list;
+    // alias char* va_list;
 
     /**********
      * Initialize ap.
@@ -29,7 +29,8 @@ version( X86 )
      */
     void va_start(T)(out va_list ap, ref T parmn)
     {
-        ap = cast(va_list)( cast(void*) &parmn + ( ( T.sizeof + int.sizeof - 1 ) & ~( int.sizeof - 1 ) ) );
+        // ap = cast(va_list)( cast(void*) &parmn + ( ( T.sizeof + int.sizeof - 1 ) & ~( int.sizeof - 1 ) ) );
+        assert(0);
     }
 
     /************
@@ -38,8 +39,8 @@ version( X86 )
      */
     T va_arg(T)(ref va_list ap)
     {
-        T arg = *cast(T*) ap;
-        ap = cast(va_list)( cast(void*) ap + ( ( T.sizeof + int.sizeof - 1 ) & ~( int.sizeof - 1 ) ) );
+        T arg = void;
+        va_arg(ap, arg);
         return arg;
     }
 
@@ -49,8 +50,9 @@ version( X86 )
      */
     void va_arg(T)(ref va_list ap, ref T parmn)
     {
-        parmn = *cast(T*)ap;
-        ap = cast(va_list)(cast(void*)ap + ((T.sizeof + int.sizeof - 1) & ~(int.sizeof - 1)));
+        // parmn = *cast(T*)ap;
+        // ap = cast(va_list)(cast(void*)ap + ((T.sizeof + int.sizeof - 1) & ~(int.sizeof - 1)));
+        assert(0);
     }
 
     /*************
@@ -73,6 +75,7 @@ version( X86 )
      */
     void va_end(va_list ap)
     {
+        assert(0);
     }
 
     ///
@@ -90,7 +93,7 @@ else version (Windows) // Win64
     /*********************
      * The argument pointer type.
      */
-    alias char* va_list;
+    // alias char* va_list;
 
     /**********
      * Initialize ap.
@@ -190,17 +193,19 @@ else version (X86_64)
      * Making it an array of 1 causes va_list to be passed as a pointer in
      * function argument lists
      */
-    alias va_list = __va_list*;
+    // alias va_list = __va_list*;
 
     ///
     void va_start(T)(out va_list ap, ref T parmn)
     {
-        ap = &parmn.va;
+        // ap = &parmn.va;
+        assert(0);
     }
 
     ///
     T va_arg(T)(va_list ap)
-    {   T a;
+    {
+        T a;
         va_arg(ap, a);
         return a;
     }
